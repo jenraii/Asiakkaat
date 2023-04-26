@@ -1,0 +1,12 @@
+label {
+	display: block;
+	width: 100px;
+	float: left;	
+}
+input {
+	margin-bottom:5px;
+}
+
+header {
+    background-color: green;
+}
