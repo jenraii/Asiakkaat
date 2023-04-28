@@ -13,7 +13,7 @@ public class Dao {
 	private Connection con = null;
 	private ResultSet rs = null;
 	private PreparedStatement stmtPrep = null;
-	private String sql;
+	private String sql = "";
 	private String db = "Myynti.sqlite";
 
 
@@ -61,7 +61,7 @@ private void sulje() {
 
 public ArrayList<Asiakas> getAllItems() {
 	ArrayList<Asiakas> asiakkaat = new ArrayList<Asiakas>();
-	sql = "SELECT * FROM myynti ORDER BY id DESC"; 
+	sql = "SELECT * FROM asiakkaat ORDER BY asiakas_id DESC"; 
 	try {
 		con = yhdista();
 		if (con != null) { 
@@ -70,10 +70,11 @@ public ArrayList<Asiakas> getAllItems() {
 			if (rs != null) { 
 				while (rs.next()) {
 					Asiakas asiakas = new Asiakas();
-					asiakas.setEtunimi(rs.getString(1));
-					asiakas.setSukunimi(rs.getString(2));
-					asiakas.setPuhelin(rs.getString(3));
-					asiakas.setSposti(rs.getString(4));
+					asiakas.setId(rs.getInt(1));
+					asiakas.setEtunimi(rs.getString(2));
+					asiakas.setSukunimi(rs.getString(3));
+					asiakas.setPuhelin(rs.getString(4));
+					asiakas.setSposti(rs.getString(5));
 					asiakkaat.add(asiakas);
 				}
 			}
@@ -88,7 +89,7 @@ public ArrayList<Asiakas> getAllItems() {
 
 public ArrayList<Asiakas> getAllItems(String searchStr) {
 	ArrayList<Asiakas> asiakkaat = new ArrayList<Asiakas>();
-	sql = "SELECT * FROM myynti WHERE etunimi LIKE ? or sukunimi LIKE ? or puhelin LIKE ? or sposti LIKE ? ORDER by id DESC"; 
+	sql = "SELECT * FROM asiakkaat WHERE etunimi LIKE ? or sukunimi LIKE ? or puhelin LIKE ? or sposti LIKE ? ORDER by asiakas_id DESC"; 
 	try {
 		con = yhdista();
 		if (con != null) { 
@@ -101,10 +102,11 @@ public ArrayList<Asiakas> getAllItems(String searchStr) {
 			if (rs != null) {
 				while (rs.next()) {
 					Asiakas asiakas = new Asiakas();
-					asiakas.setEtunimi(rs.getString(1));
-					asiakas.setSukunimi(rs.getString(2));
-					asiakas.setPuhelin(rs.getString(3));
-					asiakas.setSposti(rs.getString(4));
+					asiakas.setId(rs.getInt(1));
+					asiakas.setEtunimi(rs.getString(2));
+					asiakas.setSukunimi(rs.getString(3));
+					asiakas.setPuhelin(rs.getString(4));
+					asiakas.setSposti(rs.getString(5));
 					asiakkaat.add(asiakas);
 				}
 			}
@@ -115,6 +117,44 @@ public ArrayList<Asiakas> getAllItems(String searchStr) {
 		sulje();
 	}
 	return asiakkaat;
+}
+
+
+public boolean addItem (Asiakas asiakas) {
+	boolean paluuArvo = true;
+	sql = "INSERT INTO asiakkaat(etunimi, sukunimi, puhelin, sposti) VALUES (?,?,?,?)";
+	try {
+		con = yhdista();
+		stmtPrep = con.prepareStatement(sql);
+		stmtPrep.setString(1, asiakas.getEtunimi());
+		stmtPrep.setString(2, asiakas.getSukunimi());
+		stmtPrep.setString(3, asiakas.getPuhelin());
+		stmtPrep.setString(4, asiakas.getSposti());
+		stmtPrep.executeUpdate();
+	} catch (Exception e) {
+		paluuArvo = false;
+		e.printStackTrace();
+	} finally {
+		sulje();
+	}
+	return paluuArvo;
+}
+
+public boolean removeItem (int id) {
+	boolean paluuArvo = true;
+	sql = "DELETE FROM asiakkaat WHERE asiakas_id=?";
+	try {
+		con = yhdista();
+		stmtPrep = con.prepareStatement(sql);
+		stmtPrep.setInt(1, id);
+		stmtPrep.executeUpdate();
+	} catch (Exception e) {
+		e.printStackTrace();
+		paluuArvo = false;
+	} finally {
+		sulje();
+	}
+	return paluuArvo;
 }
 }
 

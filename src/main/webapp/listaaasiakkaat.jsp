@@ -5,12 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <script src="scripts/main.js"></script>
-<link rel="stylesheet" type="text/css" href="main.css">
-<title>Asiakkaat</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<title>Asiakkaiden listaus</title>
 </head>
 <body>
 <table id="listaus">
 	<thead>
+	<tr>
+		<th colspan="5" class="oikealle"><a id="linkki" href="lisaaasiakas.jsp">Lisää uusi asiakas</a></th>
+	</tr>
 		<tr>
 			<th>Hakusana:</th>
 			<th colspan="3"><input type="text" id="hakusana"></th>
@@ -27,7 +30,6 @@
 	<tbody id="tbody">
 	</tbody>
 </table>
-<span id="ilmo"></span>
 <script>
 haeAsiakkaat();
 </script>
