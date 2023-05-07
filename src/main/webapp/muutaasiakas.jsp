@@ -7,9 +7,9 @@
 <script src="scripts/main.js"></script>
 <script src="scripts/io.js"></script>
 <link rel="stylesheet" type="text/css" href="css/main.css">
-<title>Asiakkaan lisäys</title>
+<title>Asiakkaan tietojen muutos</title>
 </head>
-<body onload="asetaFocus('etunimi')" onkeydown="tutkiKey(event, 'lisaa')">
+<body onload="asetaFocus('etunimi')" onkeydown="tutkiKey(event, 'paivita')">
 <form name="lomake">
 	<table>
 		<thead>	
@@ -30,11 +30,15 @@
 				<td><input type="text" name="sukunimi" id="sukunimi" /></td>
 				<td><input type="text" name="puhelin" id="puhelin" /></td>
 				<td><input type="text" name="sposti" id="sposti" /></td> 
-				<td><input type="button" value="Lisää" onclick="tutkiJaLisaa()" /></td>
+				<td><input type="button" id="tallenna" value="Hyväksy" onclick="tutkiJaPaivita()" /></td>
 			</tr>
 		</tbody>
 	</table>
+	<input type="hidden" name="id" id="asiakas_id">
 </form>
-<p id="ilmo"></p>
+<span id="ilmo"></span>
+<script>
+haeAsiakas();
+</script>
 </body>
 </html>
