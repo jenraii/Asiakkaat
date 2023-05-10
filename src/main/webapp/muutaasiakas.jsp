@@ -1,3 +1,4 @@
+<%@include file="header.jsp" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -34,7 +35,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<input type="hidden" name="id" id="asiakas_id">
+	<input type="hidden" name="asiakas_id" id="asiakas_id">
 </form>
 <span id="ilmo"></span>
 <script>

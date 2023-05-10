@@ -19,9 +19,9 @@ public class Dao {
 	private Connection yhdista() {
 		Connection con = null;
 		String path = System.getProperty("catalina.base");
-		path = path.substring(0, path.indexOf(".metadata")).replace("\\", "/"); // Eclipsessa
+		//path = path.substring(0, path.indexOf(".metadata")).replace("\\", "/"); // Eclipsessa
 		//System.out.println(path); //Tästä näet mihin kansioon laitat tietokanta-tiedostosi
-		// path += "/webapps/"; //Tuotannossa. Laita tietokanta webapps-kansioon
+		path += "/webapps/"; //Tuotannossa. Laita tietokanta webapps-kansioon
 		String url = "jdbc:sqlite:" + path + db;
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -62,13 +62,13 @@ public class Dao {
 
 	public ArrayList<Asiakas> getAllItems() {
 		ArrayList<Asiakas> asiakkaat = new ArrayList<Asiakas>();
-		sql = "SELECT * FROM asiakkaat ORDER BY asiakas_id DESC"; //Suurin id tulee ensimmäisenä
+		sql = "SELECT * FROM asiakkaat ORDER BY asiakas_id DESC";
 		try {
 			con = yhdista();
-			if (con != null) { // jos yhteys onnistui
+			if (con != null) { 
 				stmtPrep = con.prepareStatement(sql);
 				rs = stmtPrep.executeQuery();
-				if (rs != null) { // jos kysely onnistui
+				if (rs != null) { 
 					while (rs.next()) {
 						Asiakas asiakas = new Asiakas();
 						asiakas.setAsiakas_id(rs.getInt(1));
@@ -88,19 +88,19 @@ public class Dao {
 		return asiakkaat;
 	}
 	
-	public ArrayList<Asiakas> getAllItems(String searchStr) { //Metodeja voi kuormittaa, kunhan parametreiss䠥roja
+	public ArrayList<Asiakas> getAllItems(String searchStr) { 
 		ArrayList<Asiakas> asiakkaat = new ArrayList<Asiakas>();
 		sql = "SELECT * FROM asiakkaat WHERE etunimi LIKE ? or sukunimi LIKE ? or puhelin LIKE ? or sposti LIKE ? ORDER BY asiakas_id DESC";
 		try {
 			con = yhdista();
-			if (con != null) { // jos yhteys onnistui
+			if (con != null) { 
 				stmtPrep = con.prepareStatement(sql);
 				stmtPrep.setString(1, "%" + searchStr + "%");
 				stmtPrep.setString(2, "%" + searchStr + "%");
 				stmtPrep.setString(3, "%" + searchStr + "%");
 				stmtPrep.setString(4, "%" + searchStr + "%");
 				rs = stmtPrep.executeQuery();
-				if (rs != null) { // jos kysely onnistui
+				if (rs != null) { 
 					while (rs.next()) {
 						Asiakas asiakas = new Asiakas();
 						asiakas.setAsiakas_id(rs.getInt(1));
@@ -131,7 +131,7 @@ public class Dao {
 			stmtPrep.setString(3, asiakas.getPuhelin());
 			stmtPrep.setString(4, asiakas.getSposti());
 			stmtPrep.executeUpdate();
-			//System.out.println("Uusin id on " + stmtPrep.getGeneratedKeys().getInt(1));	       
+				       
 		} catch (SQLException e) {				
 			e.printStackTrace();
 			paluuArvo=false;
@@ -141,7 +141,7 @@ public class Dao {
 		return paluuArvo;
 	}
 	
-	public boolean removeItem(int asiakas_id){ //Oikeassa elämässä tiedot ensisijaisesti merkitään poistetuksi.
+	public boolean removeItem(int asiakas_id){
 		boolean paluuArvo=true;
 		sql="DELETE FROM asiakkaat WHERE asiakas_id=?";						  
 		try {
@@ -158,14 +158,14 @@ public class Dao {
 		return paluuArvo;
 	}	
 	
-	public Asiakas getItem(int asiakas_id) {
+	public Asiakas getItem(int id) {
 		Asiakas asiakas = null;
 		sql = "SELECT * FROM asiakkaat WHERE asiakas_id=?";
 		try {
 			con = yhdista();
 			if(con!=null) {
 				stmtPrep = con.prepareStatement(sql);
-	    		stmtPrep.setInt(1, asiakas_id);
+	    		stmtPrep.setInt(1, id);
 	    		rs = stmtPrep.executeQuery();
 	    		if(rs.isBeforeFirst()) {
 	    			rs.next();
@@ -204,6 +204,29 @@ public class Dao {
 			sulje();
 		}
 		return paluuArvo;
+	}
+	
+	public String findUser(String uid, String pwd) {
+		String nimi = null;
+		sql="SELECT * FROM asiakkaat WHERE sposti=? AND salasana=?";						  
+		try {
+			con = yhdista();
+			if(con!=null){ 
+				stmtPrep = con.prepareStatement(sql); 
+				stmtPrep.setString(1, uid);
+				stmtPrep.setString(2, pwd);
+        		rs = stmtPrep.executeQuery();  
+        		if(rs.isBeforeFirst()){ 
+        			rs.next();
+        			nimi = rs.getString("etunimi")+ " " +rs.getString("sukunimi");     			      			
+				}        		
+			}			        
+		} catch (Exception e) {				
+			e.printStackTrace();			
+		} finally {
+			sulje();
+		}				
+		return nimi;
 	}
 }
 

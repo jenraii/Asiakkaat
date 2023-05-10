@@ -12,6 +12,7 @@ function haeAsiakkaat() {
 
 function lisaaTiedot(){
 	let formData = serialize_form(document.lomake); 
+	console.log(formData);
 	let url = "asiakkaat";    
     let requestOptions = {
         method: "POST",
@@ -52,7 +53,7 @@ function poistaAsiakas (asiakas_id, nimi) {
 }	
 
 function haeAsiakas() {
-	let url = "asiakkaat?asiakas_id=" + requestURLParam("asiakas_id");
+	let url = "asiakkaat?asiakas_id=" + requestURLParam("id");
 	let requestOptions = {
 		method: "GET",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" }
@@ -71,6 +72,7 @@ function haeAsiakas() {
 
 function paivitaTiedot() {
 	let formData = serialize_form(lomake);
+	console.log(formData);
 	let url = "asiakkaat";
 	let requestOptions = {
 		method: "PUT",

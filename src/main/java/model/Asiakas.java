@@ -9,6 +9,7 @@ public Asiakas() {
 }
 
 public Asiakas(int asiakas_id, String etunimi, String sukunimi, String puhelin, String sposti) {
+	super();
 	this.asiakas_id = asiakas_id;
 	this.etunimi = etunimi;
 	this.sukunimi = sukunimi;

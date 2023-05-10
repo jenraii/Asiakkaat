@@ -18,6 +18,7 @@ function requestURLParam(sParam) {
 
 
 function printItems(respObjList) {
+	console.log(respObjList);
 	let htmlStr="";
 	for(let item of respObjList) {
 		htmlStr+="<tr id='rivi_"+item.asiakas_id+"'>";
